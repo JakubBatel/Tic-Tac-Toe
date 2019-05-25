@@ -1,6 +1,5 @@
 package sk.jb.tictactoe.game;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,9 +10,19 @@ public class Board {
     private Symbol[][] board;
     private final int SIZE;
 
-    public Board(Symbol[][] board, int size) {
+    public Board(int size) {
+        this(new Symbol[size][size]);
+    }
+
+    public Board(Symbol[][] board) {
+        if (board == null) {
+            throw new IllegalArgumentException("Board can't be null");
+        }
+        if (board.length != board[0].length) {
+            throw new IllegalArgumentException("Board is not square");
+        }
         this.board = board;
-        this.SIZE = size;
+        this.SIZE = board.length;
     }
 
     public int getSIZE() {
@@ -21,7 +30,7 @@ public class Board {
     }
 
     public Board copy() {
-        return new Board(Arrays.stream(board).map(Symbol[]::clone).toArray(Symbol[][]::new), SIZE);
+        return new Board(Arrays.stream(board).map(Symbol[]::clone).toArray(Symbol[][]::new));
     }
 
     public Symbol at(int x, int y) {

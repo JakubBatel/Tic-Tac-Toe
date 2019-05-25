@@ -81,15 +81,19 @@ public class GuiGameRenderer implements Renderer {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(msg);
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    TicTacToe.setRoot("menu");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+        if (type == Alert.AlertType.ERROR) {
+            alert.showAndWait();
+        } else {
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    try {
+                        TicTacToe.setRoot("menu");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

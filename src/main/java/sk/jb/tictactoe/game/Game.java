@@ -17,7 +17,7 @@ public class Game {
         if (size < 3) {
             throw new IllegalArgumentException("Invalid size of the game");
         }
-        board = new Board(new Symbol[size][size], size);
+        board = new Board(new Symbol[size][size]);
         this.renderer = renderer;
     }
 
