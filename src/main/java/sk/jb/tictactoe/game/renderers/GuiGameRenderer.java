@@ -24,11 +24,21 @@ public class GuiGameRenderer implements Renderer {
         gc = graphicsContext;
     }
 
+    /**
+     * Count offset for tile
+     * @param size number of tile to offset
+     * @return offset
+     */
     public static int getTileSize(int size) {
         return TILE_SIZE * size + GAP_SIZE * (size + 1);
     }
 
-    private static int translate(double origin) {
+    /**
+     * Map pixels to game indexes
+     * @param origin pixel value
+     * @return game index
+     */
+    public static int translate(double origin) {
         int i = 0;
         int HALF_GAP_SIZE = GAP_SIZE / 2;
         while (origin > getTileSize(i + 1) - HALF_GAP_SIZE) {
@@ -37,14 +47,10 @@ public class GuiGameRenderer implements Renderer {
         return i;
     }
 
-    public static int translateX(double x) {
-        return translate(x);
-    }
-
-    public static int translateY(double y) {
-        return translate(y);
-    }
-
+    /**
+     * Draw the game grid
+     * @param size of the game
+     */
     private void drawLines(int size) {
         int fullSize = getTileSize(size);
         gc.setLineWidth(5);
@@ -57,25 +63,19 @@ public class GuiGameRenderer implements Renderer {
         }
     }
 
+    /**
+     * Clear screen, called by {@link #render(Game)} before actual rendering
+     */
     private void clearScreen() {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
     }
 
-    @Override
-    public void render(Game game) {
-        int size = game.getSize();
-        clearScreen();
-        drawLines(size);
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                Symbol symbol = game.at(i, j);
-                if (symbol != null) {
-                    gc.drawImage((symbol == Symbol.CROSS) ? X_SYMBOL : O_SYMBOL, getTileSize(i), getTileSize(j));
-                }
-            }
-        }
-    }
-
+    /**
+     * Display message of given type, if message is information of end then set ok button to switch to menu
+     * @param type of the message
+     * @param msg text of message
+     * @param title of window
+     */
     private void showMessage(Alert.AlertType type, String msg, String title) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -93,6 +93,21 @@ public class GuiGameRenderer implements Renderer {
                     }
                 }
             });
+        }
+    }
+
+    @Override
+    public void render(Game game) {
+        int size = game.getSize();
+        clearScreen();
+        drawLines(size);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Symbol symbol = game.at(i, j);
+                if (symbol != null) {
+                    gc.drawImage((symbol == Symbol.CROSS) ? X_SYMBOL : O_SYMBOL, getTileSize(i), getTileSize(j));
+                }
+            }
         }
     }
 

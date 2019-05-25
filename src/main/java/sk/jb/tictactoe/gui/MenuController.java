@@ -10,7 +10,9 @@ import sk.jb.tictactoe.game.Symbol;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-
+/**
+ * @author Jakub Bateľ
+ */
 public class MenuController implements Initializable {
 
     @FXML
@@ -34,6 +36,12 @@ public class MenuController implements Initializable {
         return (int) Math.round(gameSize.getValue());
     }
 
+    /**
+     * Build player of given type
+     * @param type of the player
+     * @param symbol which player will use
+     * @return new player
+     */
     private AbstractPlayer createPlayer(PlayerType type, Symbol symbol) {
         switch (type) {
             case HUMAN:

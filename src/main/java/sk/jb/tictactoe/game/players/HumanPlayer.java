@@ -4,6 +4,10 @@ import sk.jb.tictactoe.game.exceptions.GameException;
 import sk.jb.tictactoe.game.Game;
 import sk.jb.tictactoe.game.Symbol;
 
+/**
+ * Representation of Human player
+ * @author Jakub Bateľ
+ */
 public class HumanPlayer extends AbstractPlayer {
 
     private Integer nextX;
@@ -32,6 +36,11 @@ public class HumanPlayer extends AbstractPlayer {
         }
     }
 
+    /**
+     * Method called by player controller, when player enters coordinates of next move
+     * @param x index of row
+     * @param y index of column
+     */
     public void doMove(int x, int y) {
         nextX = x;
         nextY = y;

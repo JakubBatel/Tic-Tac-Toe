@@ -19,15 +19,28 @@ import java.io.IOException;
 
 import static sk.jb.tictactoe.game.renderers.GuiGameRenderer.*;
 
+/**
+ * @author Jakub Bateľ
+ */
 public class TicTacToe extends Application {
 
     private static Scene scene;
     private static Game game;
 
+    /**
+     * Set root of scene to Parent loaded from fxml
+     * @param fxml name of file to load
+     * @throws IOException when failed to read fxml file
+     */
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
+    /**
+     * Resize window to given width and height
+     * @param width of window
+     * @param height of window
+     */
     private static void resizeWindowToFit(double width, double height) {
         Window window = scene.getWindow();
         final double decorationHeight = window.getHeight() - scene.getHeight();
@@ -37,6 +50,31 @@ public class TicTacToe extends Application {
         window.centerOnScreen();
     }
 
+    /**
+     * Load parent from fxml file
+     * @param fxml name of the file
+     * @return parent build from fxml file
+     * @throws IOException when failed to read fxml file
+     */
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(TicTacToe.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
+
+    /**
+     * Close the window
+     */
+    public static void exit() {
+        Stage stage = (Stage) scene.getWindow();
+        stage.close();
+    }
+
+    /**
+     * Initialize game screen and set it as root
+     * @param size of game (e.g. traditional 3x3 game, ...)
+     * @param first player of the game
+     * @param second player of the game
+     */
     public static void switchToGame(int size, AbstractPlayer first, AbstractPlayer second) {
         VBox root = new VBox();
         Canvas canvas = new Canvas(getTileSize(size), getTileSize(size));
@@ -44,7 +82,7 @@ public class TicTacToe extends Application {
             AbstractPlayer player = game.getPlayerOnMove();
             if (player != null && player.getType() == PlayerType.HUMAN) {
                 HumanPlayer hp = (HumanPlayer) player;
-                hp.doMove(translateX(event.getX()), translateY(event.getY()));
+                hp.doMove(translate(event.getX()), translate(event.getY()));
             }
         });
         root.getChildren().add(canvas);
@@ -53,16 +91,6 @@ public class TicTacToe extends Application {
         game = new Game(size, renderer);
         game.start(first, second);
         scene.setRoot(root);
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(TicTacToe.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
-    public static void exit() {
-        Stage stage = (Stage) scene.getWindow();
-        stage.close();
     }
 
     @Override

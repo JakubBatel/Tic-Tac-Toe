@@ -6,6 +6,10 @@ import sk.jb.tictactoe.game.exceptions.GameException;
 
 import java.util.Random;
 
+/**
+ * Class representing Simple AI. Next move is chosen randomly.
+ * @author Jakub Bateľ
+ */
 public class SimpleAI extends AbstractPlayer {
 
     public SimpleAI(Symbol symbol) {

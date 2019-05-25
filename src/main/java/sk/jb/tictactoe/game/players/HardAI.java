@@ -14,6 +14,10 @@ import static java.lang.Integer.max;
 import static java.lang.Integer.min;
 import static java.lang.Math.pow;
 
+/**
+ * Class representing Hard AI. It is implementation of MiniMax algorithm.
+ * @author Jakub Bateľ
+ */
 public class HardAI extends AbstractPlayer {
 
     private class Position {
@@ -39,6 +43,12 @@ public class HardAI extends AbstractPlayer {
         super(game, symbol, PlayerType.HARD_AI);
     }
 
+    /**
+     * Evaluate list of symbols (e.g. one row, one col, ...)
+     * @param list representation of row, col, etc.
+     * @param prefer symbol of player which is maximised
+     * @return integer value representing how good is this list according to preferred player
+     */
     private int eval(List<Symbol> list, Symbol prefer) {
         int good = Collections.frequency(list, prefer);
         int bad = Collections.frequency(list, otherSymbol(prefer));
@@ -51,6 +61,12 @@ public class HardAI extends AbstractPlayer {
         return 0;
     }
 
+    /**
+     * Evaluate all rows and columns of given board
+     * @param board representing state of game
+     * @param symbol of preferred player
+     * @return integer value representing partial score of how good this state is
+     */
     private int evaluateHorizontalAndVertical(Board board, Symbol symbol) {
         final int size = game.getSize();
         int score = 0;
@@ -60,11 +76,22 @@ public class HardAI extends AbstractPlayer {
         return score;
     }
 
+    /**
+     * Evaluate given state of game
+     * @param board representing state of game
+     * @param symbol of preferred player
+     * @return integer value representing score of how good this state of game is
+     */
     private int evaluate(Board board, Symbol symbol) {
         return evaluateHorizontalAndVertical(board, symbol) + eval(board.getFirstDiagonal(), symbol) +
                 eval(board.getSecondDiagonal(), symbol);
     }
 
+    /**
+     * Find all empty places on given board
+     * @param board representing state of game
+     * @return list of empty positions
+     */
     private List<Position> findAllEmptyPositions(Board board) {
         List<Position> list = new ArrayList<>();
         for (int i = 0; i < board.getSIZE(); i++) {
@@ -77,10 +104,24 @@ public class HardAI extends AbstractPlayer {
         return list;
     }
 
+    /**
+     * Find opposite symbol for given symbol
+     * @param symbol to find opposite of
+     * @return opposite symbol e.g. O -> X and vice versa
+     */
     private Symbol otherSymbol(Symbol symbol) {
         return (symbol == Symbol.CIRCLE) ? Symbol.CROSS : Symbol.CIRCLE;
     }
 
+    /**
+     * MiniMax algorithm evaluating states of game
+     * @param board representing state of game
+     * @param depth max recursion depth
+     * @param alpha value of MiniMax
+     * @param beta value of MinimMax
+     * @param symbol of preferred player
+     * @return integer representing how good is this move
+     */
     private int minimax(Board board, int depth, int alpha, int beta, Symbol symbol) {
         if (depth == 0 || board.isFinished()) {
             return evaluate(board, getSymbol());
@@ -105,6 +146,12 @@ public class HardAI extends AbstractPlayer {
         return bestEval;
     }
 
+    /**
+     * MiniMax algorithm for all possible moves for given board
+     * @param board representing game state
+     * @param depth max recursion depth
+     * @return best position according to MiniMax
+     */
     private Position minimax(Board board, int depth) {
         List<Position> positions = findAllEmptyPositions(board);
         TreeMap<Integer, Position> map = new TreeMap<>();
