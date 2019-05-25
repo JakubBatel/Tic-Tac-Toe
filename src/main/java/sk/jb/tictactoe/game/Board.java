@@ -72,17 +72,6 @@ public class Board {
         return true;
     }
 
-    public static boolean isAllSameOrNull(List<Symbol> list) {
-        for (int i = 1; i < list.size(); i++) {
-            Symbol first = list.get(i - 1);
-            Symbol second = list.get(i);
-            if (first != null && second != null && first != second) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private boolean checkVerticalAndHorizontal() {
         for (int i = 0; i < SIZE; i++) {
             if (isAllSameAndNotNull(getRow(i)) || isAllSameAndNotNull(getColumn(i))) {
